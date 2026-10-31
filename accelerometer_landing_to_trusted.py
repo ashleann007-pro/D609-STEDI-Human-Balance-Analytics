@@ -34,6 +34,8 @@ SelectAccelerometerFields_node1793461839569 = SelectFields.apply(frame=JoinAccel
 
 # Script generated for node Accelerometer Trusted S3
 EvaluateDataQuality().process_rows(frame=SelectAccelerometerFields_node1793461839569, ruleset=DEFAULT_DATA_QUALITY_RULESET, publishing_options={"dataQualityEvaluationContext": "EvaluateDataQuality_node1793461250738", "enableDataQualityResultsPublishing": True}, additional_options={"dataQualityResultsPublishing.strategy": "BEST_EFFORT", "observations.scope": "ALL"})
-AccelerometerTrustedS3_node1793462025050 = glueContext.write_dynamic_frame.from_options(frame=SelectAccelerometerFields_node1793461839569, connection_type="s3", format="glueparquet", connection_options={"path": "s3://stedi-human-balance-d609-2026/accelerometer_trusted/", "partitionKeys": []}, format_options={"compression": "snappy"}, transformation_ctx="AccelerometerTrustedS3_node1793462025050")
-
+AccelerometerTrustedS3_node1793462025050 = glueContext.getSink(path="s3://stedi-human-balance-d609-2026/accelerometer_trusted/", connection_type="s3", updateBehavior="UPDATE_IN_DATABASE", partitionKeys=[], enableUpdateCatalog=True, transformation_ctx="AccelerometerTrustedS3_node1793462025050")
+AccelerometerTrustedS3_node1793462025050.setCatalogInfo(catalogDatabase="stedi_human_balance",catalogTableName="accelerometer_trusted")
+AccelerometerTrustedS3_node1793462025050.setFormat("glueparquet", compression="snappy")
+AccelerometerTrustedS3_node1793462025050.writeFrame(SelectAccelerometerFields_node1793461839569)
 job.commit()
